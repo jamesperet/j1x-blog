@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Atom Editor Awesome Setup"
-date:   2015-05-15 22:30:00
+date:   2015-06-15 22:30:00
 categories: jekyll update
 ---
 
