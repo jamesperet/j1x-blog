@@ -1,8 +1,18 @@
 ---
 layout: post
-title:  "Whois JSON API"
+title: "Whois JSON API"
 date:   2015-06-07 20:34:46
-categories: jekyll update
+last_modified_at:  2015-08-02 19:05:00
+excerpt: "Walter Elias Disney was an American entrepreneur, cartoonist, animator, voice actor, and film producer. As a prominent..."
+categories: history
+tags:  disney
+image:
+  feature: j1x-whois.jpg
+  topPosition: 0px
+bgContrast: dark
+bgGradientOpacity: darker
+syntaxHighlighter: yes
+published: true
 ---
 
 Today I want to introduce a new little service that i created: a [Whois JSON API](http://whois.j1x.co).

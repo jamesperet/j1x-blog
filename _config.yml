@@ -1,12 +1,53 @@
-# Site settings
-title: James Peret Blog
-email: james.peret@gmail.com
-description: > # this means to ignore newlines until "baseurl:"
-  I'm a hacker from São Paulo, Brazil. Currently working on Avalanche Network as the main programmer and designer.
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://jamesperet.com.br" # the base hostname & protocol for your site
-twitter_username: jamesperet
-github_username:  jamesperet
 
-# Build settings
-markdown: kramdown
+# Syntax highlighting
+markdown:            redcarpet
+highlighter:         pygments
+
+# Permalinks
+permalink:           /:title
+relative_permalinks: true
+
+# Setup
+timezone:            America/Brasilia # eg. Asia/Kathmandu
+locale:              en_us # eg. en_us
+name:				         'J1X Blog'
+title:               'J1X Blog'
+tagline:             'technical writings by James Peret'
+description:         'description'
+url:                 site url
+rss:                 rss feed url
+baseurl:             '/'
+baseurl_posts_img:   '/assets/images/posts/'
+baseurl_featured_img: '/assets/images/hero/'
+baseurl_featured_thumbnail: '/assets/images/thumbnail/'
+baseurl_javascripts: '/assets/javascripts/'
+icon:                your site icon path # /assets/img/icon.png [best 300px X 300px]
+disqus:              j1x-blog # get it on https://disqus.com/admin/
+
+author:
+  name:           	 James Peret
+  url:            	 http://jamesperet.com
+  facebook:          jamesperet
+  twitter:           jamesperet
+  google_plus:       jamesperet
+  linkedin:          jamesperet
+  pinterest:         jamesperet
+  github:            jamesperet
+  youtube:           jamesperet
+  vimeo:             jamesperet
+
+fb_admins:           your facebook profile id
+fb_appid:            your facebook app id
+
+# Server
+destination:      	 ./_site
+exclude:          	 [".editorconfig", ".gitignore", "bower.json", "composer.json", "CONTRIBUTING.md", "CNAME", "LICENSE", "Gruntfile.js", "package.json", "node_modules", "README.md", "sass", "haml"]
+port:             	 9001
+
+defaults:
+  -
+    scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      layout: "default"

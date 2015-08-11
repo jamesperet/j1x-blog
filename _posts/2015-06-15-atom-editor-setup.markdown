@@ -1,11 +1,18 @@
 ---
 layout: post
-title:  "Atom Editor Awesome Setup"
-date:   2015-06-15 22:30:00
-categories: jekyll update
+title: "Atom Editor Awesome Setup"
+date:   2015-06-15T15:30:00-03:00
+last_modified_at:  2015-08-02T19:05:00-03:00
+excerpt: "A how to guide to setting up Atom Editor"
+categories: ["software"]
+tags: ["tutorial", "software"]
+image:
+  feature: atom-editor.jpg
+  topPosition: 0px
+bgContrast: dark
+bgGradientOpacity: darker
+syntaxHighlighter: yes
 ---
-
-![James Peret's Atom Editor Layout]({{ site.url }}/assets/atom-editor-james-1.png)
 
 Recently i have switched my programming environment from [Text Mate](https://macromates.com/) to the HTML5 based [Atom IDE](https://atom.io) made by **GitHub**. It's an awesome code editor with lots of plugins and themes.
 
