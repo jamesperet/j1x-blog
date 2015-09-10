@@ -15,9 +15,25 @@ syntaxHighlighter: yes
 published: false
 ---
 
-### Creating the Raspbian boot disk
+## Install and configure
 
-To create a disk image of the Raspbian OS on a micro SD card from a mac, follow instructions [here](https://www.raspberrypi.org/documentation/installation/installing-images/mac.md).
+### Creating the Raspbian boot disk on a Mac
+
+Insert a MicroSD card to your computer and find out the disk identifier (ex: ```disk4```):
+
+    diskutil list
+
+Unmount the SD card using the disk identifier:
+
+    diskutil unmountDisk /dev/disk4
+
+Copy the raspbian img to the SD card:
+
+    sudo dd bs=1m if=Desktop/2015-05-05-raspbian-wheezy.img of=/dev/rdisk4
+
+This command will take a while. You can check the progress using ```SIGINFO``` by pressing ```CTRL + T```.
+
+For more information on creating a disk image of the Raspbian OS on a micro SD card from a mac or other operating systems, read the official instructions [here](https://www.raspberrypi.org/documentation/installation/installing-images/mac.md).
 
 ### First Boot
 
@@ -31,9 +47,11 @@ To start the Raspbian GUI, run the command:
 
     $ startx
 
-### Setting up Wi-Fi
+### Setting up Wi-Fi and Ethernet
 
-http://www.howtogeek.com/167425/how-to-setup-wi-fi-on-your-raspberry-pi-via-the-command-line/
+To set up multiple wired and wi-fi connections using WICD-CURSES app, follow this [instructions](http://www.raspyfi.com/wi-fi-on-raspberry-pi-a-simple-guide/).
+
+To set up a single wi-fi connection, follow this [instructions](http://www.howtogeek.com/167425/how-to-setup-wi-fi-on-your-raspberry-pi-via-the-command-line/)
 
 ### Installing Apps
 
@@ -78,7 +96,9 @@ http://www.howtogeek.com/141157/how-to-configure-your-raspberry-pi-for-remote-sh
 * [x11vnc](http://www.karlrunge.com/x11vnc/) ([command list](http://www.karlrunge.com/x11vnc/x11vnc_opts.html))
 * [Stack Overflow](http://raspberrypi.stackexchange.com/questions/9590/tightvncserver-show-the-same-screen-on-hdmi-and-vncclient)
 
-### Playing Videos with VLC media Player
+## Video Players
+
+### VLC media Player
 
 To start a video, use the command the following command. The ```vvv``` is for *verbose mode*.
 
@@ -90,7 +110,13 @@ To [play a video with VLC thru a ssh session](http://stackoverflow.com/questions
 
 ```cvlc --quiet --fullscreen --no-osd --loop  playlist.xspf --x11-display :0```
 
-* [How to use VLC with hardware acceleration on a Raspberrypi](http://www.oblivion-software.de/index.php?id=56&type=98)
+* [How to use VLC with hardware acceleration on a Raspberry pi](http://www.oblivion-software.de/index.php?id=56&type=98)
+
+### HPlayer
+
+[HPlayer](https://github.com/Hemisphere-Project/HPlayer) is a OSC controllable and GPU accelerated video player for Raspberry Pi with OpenGL shaders support.
+
+## Misc
 
 ### Useful commands
 
