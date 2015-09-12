@@ -12,7 +12,7 @@ image:
 bgContrast: dark
 bgGradientOpacity: darker
 syntaxHighlighter: yes
-published: false
+published: true
 ---
 
 ## Install and configure
