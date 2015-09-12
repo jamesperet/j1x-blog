@@ -1,24 +1,4 @@
-# Mickey
-
-Mickey is a minimal one-column, responsive theme for [Jekyll](http://jekyllrb.com).
-
-It's inspired by [Hyde](http://hyde.getpoole.com), [Medium](http://medium.com), and [Squarespace](http://squarespace.com).
-
-![Mickey screenshots](/assets/images/demo.png)
-
-See Mickey in action with [the demo site](http://vincentchan.github.io/mickey) or [my personal blog](http://aneverendingdream.com).
-
-## Contents
-
-- [Installation](#installation)
-- [Options](#options)
-  - [Post front matter](#post-front-matter)
-  - [Identity](#identity)
-  - [Typography](#typography)
-  - [Images](#images)
-- [Development](#development)
-- [Author](#author)
-- [License](#license)
+# J1X Blog
 
 ## Installation
 
