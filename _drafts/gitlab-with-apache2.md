@@ -34,6 +34,8 @@ Install apache2:
     sudo a2enmod proxy_http
     sudo a2enmod proxy
     sudo a2enmod rewrite
+    sudo a2enmod ssl
+    sudo a2enmod headers
     sudo /etc/init.d/apache2 restart
 
 If apache doesnt work with the [error](https://www.digitalocean.com/community/questions/98-address-already-in-use-ah00072-make_sock-could-not-bind-to-address-80-error):
@@ -62,7 +64,7 @@ This command will show all lines that have the word "listen", including the port
 
 In ```/etc/gitlab/gitlab.rb``` modify:
 
-    external_url "http://gitlab.example.com:4554"
+    external_url "http://gitlab.example.com"
     # Disable nginx
     nginx['enable'] = false
     # Give apache user privileges to listen to GitLab
@@ -124,7 +126,9 @@ Then bind GitLab virtual host to enabled sites and restart apache:
     sudo a2ensite gitlab
     sudo service apache2 restart
 
-Then run ```sudo gitlab-ctl reconfigure``` to reload GitLab configurations.
+Then run ```sudo gitlab-ctl reconfigure``` to reload GitLab configurations. If you need to restart the server, use the command ```sudo gitlab-ctl restart```.
+
+If by any chance you have to change the git-data file, its locate in ```/var/opt/gitlab/git-data```.
 
 ## Links
 

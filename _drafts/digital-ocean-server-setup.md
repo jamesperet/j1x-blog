@@ -23,8 +23,8 @@ Now with the super user created switch from root to the new user:
 
 Create a new folder for **SSH** keys and modify its permissions:
 
-    mkdir .ssh
-    chmod 700 .ssh
+    sudo mkdir .ssh
+    sudo chmod 700 .ssh
 
 Now create a new file for your SSH key and paste your public key inside of it:
 
@@ -66,6 +66,20 @@ And thats it! Now when you log out of the root account, you wont be able to log 
 
 If you ever have to log in as the root user again, just change this settings back as your new super user using ```sudo``` before the commands.
 
+## Configure FTP
+
+    sudo apt-get install vsftpd
+
+To change vsftpd configuration, run ```sudo nano /etc/vsftpd.conf```. Change the following settings:
+
+    local_enable=YES
+    write_enable=YES
+    chroot_local_user=NO
+
+With this configuration, the admin user will be able to log in via SFTP to any folder inside ```/var/www/```. After changing configurations, restart the service:
+
+    sudo service vsftpd restart
+
 ## Change SWAP memory settings
 
 For droplets with a low amount of RAM memory, its possible to increase the **SWAP memory**.
@@ -75,12 +89,52 @@ For droplets with a low amount of RAM memory, its possible to increase the **SWA
     $ sudo swapon /mnt/swap.img
     $ sudo vim /etc/fstab
 
+## Install zshell
+
+To install zshell and set it as your default shell:
+
+    apt-get install zsh
+    apt-get install git-core
+    wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
+    chsh -s `which zsh`
+
+After installing **zshell**, exit the *ssh session* and log back in.
+
+## Install slap
+
+    sudo apt-get remove --purge node
+    sudo npm cache clean
+    sudo apt-get install build-essential
+    curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+    sudo apt-get install -y nodejs
+    sudo ln -s /usr/bin/nodejs /usr/bin/node
+
+## Change hostname
+
+To check the actual server hostname, run ```hostname --fqdn```. Then to change to a different hostname run:
+
+    sudo hostname name.example.com
+
+## System info with Archey
+
+To install run:
+
+    sudo apt-get install lsb-release scrot
+    wget http://github.com/downloads/djmelik/archey/archey-0.2.8.deb
+    sudo dpkg -i archey-0.2.8.deb
+
+To use, just run the command ```archey```.
+
 ## Usefull commands
 
 * ```sudo poweroff``` - turn off the droplet. It can be turned back on in the droplet control pannel.
 * ```sudo reboot``` - restarts the server.
 * ```landscape-sysinfo``` - simple system information. Use can use the flag ```  --exclude-sysinfo-plugins=Temperature,LandscapeLink,Processes```.
 * ```find /usr/share/figlet -name *.?lf -exec basename {}  \; | sed -e "s/\..lf$//" | xargs -I{} toilet -f {} {}``` - Show demo of toilet fonts
+* ```sudo apt-get clean``` - remove files from incomplete installations.
+* ```sudo apt-get autoremove``` - remove unused packages.
+* ```sudo apt-get update``` - update the package manager.
+* ```sudo apt-get upgrade``` - update installed apps.
 
 ## Links
 
