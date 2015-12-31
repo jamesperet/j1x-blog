@@ -1,10 +1,24 @@
 ---
 layout: post
 title:  "Gitlab with apache2 and multiple websites"
+date:   2015-09-12 02:25:10
+last_modified_at:  2015-12-10 03:05:00
+excerpt: "How to configure Gitlab to use the Apache server instead of nginx"
+categories: Guides
+tags:  Linux, Git
+image:
+  feature: apache-gitlab.jpg
+  topPosition: 0px
+bgContrast: dark
+bgGradientOpacity: darker
+syntaxHighlighter: yes
+published: true
 ---
 
 
-This tutorial assumes you have a Ubuntu 14.04 droplet on Digital Ocean. The idea is to first install the Gitlab Omnibus package, install apache and configure gitlab to use the installed apache server instead of its default nginx server.
+This tutorial assumes you have a Ubuntu 14.04 droplet on Digital Ocean with 2GB of RAM. If you use a smaller droplet with 1Gb of RAM, GitLab will run out of memory some times and crash. With a smaller droplet, it will simply not work.
+
+The idea is to first install the Gitlab Omnibus package, install apache and configure gitlab to use the installed apache server instead of its default nginx server.
 
 ## Gitlab Omnibus Install
 
@@ -58,7 +72,28 @@ Another cause for this problem may be two directives in the apache configuration
 This command will show all lines that have the word "listen", including the port numbers. If there is more than one port 80 declaration in this file, remove one of them.
 
 
-## Configuring a website
+## Configuring apache virtual hosts for a new a website
+
+To configure a website domain with apache virtual hosts, duplicate the file ```/etc/apache2/sites-available/000-default.conf``` and rename it to something like ```example-website.com.conf```. Than change the files configurations:
+
+```
+<VirtualHost *:80>
+  ServerName example-website.com
+  ServerAdmin johndoe@gmail.com
+  DocumentRoot /var/www/example-website.com/public_html
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+After creating the virtual host, add it to the enabled-sites and restart apache:
+
+```bash
+a2ensite example-website.com.conf
+apache2 restart
+```
+
+Don't forget to create a virtual host for your gitlab domain.
 
 ## Configuring gitlab to use apache2
 
