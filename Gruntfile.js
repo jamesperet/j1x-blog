@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     'sftp-deploy': {
       build: {
         auth: {
-          host: 'j1x.co',
+          host: '162.243.124.54',
           port: 22,
           authKey: 'key1'
         },

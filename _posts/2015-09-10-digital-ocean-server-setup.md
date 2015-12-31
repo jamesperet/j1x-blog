@@ -1,11 +1,29 @@
 ---
 layout: post
 title:  "Digital Ocean Server Setup"
+date:   2015-09-10 20:34:46
+last_modified_at:  2015-12-04 19:05:00
+excerpt: "How to setup and configure a Ubuntu Linux droplet with Digital Ocean."
+categories: Guides
+tags:  Linux
+image:
+  feature: archey-j1x-server.jpg
+  topPosition: 0px
+bgContrast: dark
+bgGradientOpacity: darker
+syntaxHighlighter: yes
+published: true
 ---
+
+The easiest way to create a webserver where you have root access is with a Digital Ocean Droplet. But configuring everthing everytime you create a new server is a dawnting task. This tutorial will condensate all the initial configurations of a basic server.
 
 ## Droplet Setup
 
 This server is going to have a bit of load so I will use the *$10* droplet with **1GB Ram** and **30GB SSD Disk**. Use the **Ubuntu 14.04 x64** image. I choose *Ubuntu* because there is a lot of documentation for it, but probably *Debian* or *CentOS* would be a better choise as a linux distro for a web server.
+
+After creating the droplet, get the ip and password sent to your email and login as root user:
+
+    ssh root@192.168.0.1
 
 ## Create a new super user
 
@@ -28,13 +46,13 @@ Create a new folder for **SSH** keys and modify its permissions:
 
 Now create a new file for your SSH key and paste your public key inside of it:
 
-    nano .ssh/authorized_keys
+    sudo nano .ssh/authorized_keys
 
 Press ```Ctrl + X``` to exit nano, then ```Y``` to save and then hit ```Enter```.
 
 Now restrict the permissions of the file with your key:
 
-    chmod 600 .ssh/authorized_keys
+    sudo chmod 600 .ssh/authorized_keys
 
 After everything is done, go back to being the root user:
 
@@ -93,8 +111,8 @@ For droplets with a low amount of RAM memory, its possible to increase the **SWA
 
 To install zshell and set it as your default shell:
 
-    apt-get install zsh
-    apt-get install git-core
+    sudo apt-get install zsh
+    sudo apt-get install git-core
     wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
     chsh -s `which zsh`
 
@@ -102,12 +120,11 @@ After installing **zshell**, exit the *ssh session* and log back in.
 
 ## Install slap
 
-    sudo apt-get remove --purge node
-    sudo npm cache clean
     sudo apt-get install build-essential
     curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
     sudo apt-get install -y nodejs
-    sudo ln -s /usr/bin/nodejs /usr/bin/node
+    npm install -g node-gyp
+    npm install slap -g
 
 ## Change hostname
 
@@ -122,6 +139,7 @@ To install run:
     sudo apt-get install lsb-release scrot
     wget http://github.com/downloads/djmelik/archey/archey-0.2.8.deb
     sudo dpkg -i archey-0.2.8.deb
+    archey
 
 To use, just run the command ```archey```.
 
