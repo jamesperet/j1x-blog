@@ -188,6 +188,20 @@ th {
 code {
   // Forces text to constrain to the line-height. Not ideal, but works.
   vertical-align: bottom;
+  vertical-align: bottom;
+  background: #272822;
+  color: #f8f8f2;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  /* padding: 3px; */
+  /* margin: .5em 0; */
+  overflow: auto;
+  border-radius: 0.3em;
+  font-size: 0.8em;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 2px;
+  padding-top: 2px;
 }
 
 hr {

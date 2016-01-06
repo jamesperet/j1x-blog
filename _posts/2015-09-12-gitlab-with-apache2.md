@@ -24,15 +24,19 @@ The idea is to first install the Gitlab Omnibus package, install apache and conf
 
 First install all dependencies. Choose "Internet Site" during Postfix install. Then install the [GitLab Omnibus package](https://about.gitlab.com/downloads/#ubuntu1404):
 
-    sudo apt-get install curl openssh-server ca-certificates postfix
-    curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
-    sudo apt-get install gitlab-ce
+```bash
+sudo apt-get install curl openssh-server ca-certificates postfix
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+sudo apt-get install gitlab-ce
+```
 
 Modify the GitLab configuration file located on ```/etc/gitlab/gitlab.rb```:
 
-    external_url "https://gitlab.<yourdomain>/"
-    gitlab_rails['gitlab_email_from'] = "gitlab@<yourdomain>"
-    gitlab_rails['gitlab_support_email'] = "gitlab-support@<yourdomain>"
+```ruby
+external_url "https://gitlab.<yourdomain>/"
+gitlab_rails['gitlab_email_from'] = "gitlab@<yourdomain>"
+gitlab_rails['gitlab_support_email'] = "gitlab-support@<yourdomain>"
+```
 
 Then run ```sudo gitlab-ctl reconfigure``` to reboot GitLab with the new settings.
 
@@ -42,41 +46,48 @@ After the last step, GitLab should be working properly. Visit your GitLab URL an
 
 Install apache2:
 
-    sudo apt-get update
-    sudo apt-get install apache2
+```bash
+sudo apt-get update
+sudo apt-get install apache2
 
-    sudo a2enmod proxy_http
-    sudo a2enmod proxy
-    sudo a2enmod rewrite
-    sudo a2enmod ssl
-    sudo a2enmod headers
-    sudo /etc/init.d/apache2 restart
+sudo a2enmod proxy_http
+sudo a2enmod proxy
+sudo a2enmod rewrite
+sudo a2enmod ssl
+sudo a2enmod headers
+sudo /etc/init.d/apache2 restart
+```
 
 If apache doesnt work with the [error](https://www.digitalocean.com/community/questions/98-address-already-in-use-ah00072-make_sock-could-not-bind-to-address-80-error):
 
-    (98)Address already in use: AH00072: make_sock: could not bind to address [::]:80 - error
+```text
+(98)Address already in use: AH00072: make_sock: could not bind to address [::]:80 - error
+```
 
 You can try to close other processes using port 80 with the commands:
 
-    # Find the process with
-    sudo lsof -i:80
-    # or
-    sudo netstat -ltnp | grep ':80'
-    # Then kill the process using its pid
-    sudo kill -9 1047
+```bash
+# Find the process with
+sudo lsof -i:80
+# or
+sudo netstat -ltnp | grep ':80'
+# Then kill the process using its pid
+sudo kill -9 1047
+```
 
 Another cause for this problem may be two directives in the apache configuration trying to bind to the same port.
 
-    grep Listen /etc/apache2/ports.conf
+```bash
+grep Listen /etc/apache2/ports.conf
+```
 
 This command will show all lines that have the word "listen", including the port numbers. If there is more than one port 80 declaration in this file, remove one of them.
-
 
 ## Configuring apache virtual hosts for a new a website
 
 To configure a website domain with apache virtual hosts, duplicate the file ```/etc/apache2/sites-available/000-default.conf``` and rename it to something like ```example-website.com.conf```. Than change the files configurations:
 
-```
+```apacheconf
 <VirtualHost *:80>
   ServerName example-website.com
   ServerAdmin johndoe@gmail.com
@@ -99,67 +110,74 @@ Don't forget to create a virtual host for your gitlab domain.
 
 In ```/etc/gitlab/gitlab.rb``` modify:
 
-    external_url "http://gitlab.example.com"
-    # Disable nginx
-    nginx['enable'] = false
-    # Give apache user privileges to listen to GitLab
-    web_server['external_users'] = ['www-data']
+```ruby
+external_url "http://gitlab.example.com"
+# Disable nginx
+nginx['enable'] = false
+# Give apache user privileges to listen to GitLab
+web_server['external_users'] = ['www-data']
+```
 
 Create the Virtual Host file for GitLab on ```/etc/apache2/sites-available/gitlab.conf``` with the contents below, modifying the URLs:
 
-    #This configuration has been tested on GitLab 6.0.0 and GitLab 6.0.1
-    #Note this config assumes unicorn is listening on default port 8080.
-    #Module dependencies
-    #  mod_rewrite
-    #  mod_proxy
-    #  mod_proxy_http
-    <VirtualHost gitlab.example.com:80>
-    ServerName gitlab.example.com
-    ServerSignature Off
+```apacheconf
+<VirtualHost *:80>
+  #This configuration has been tested on GitLab 6.0.0 and GitLab 6.0.1
+  #Note this config assumes unicorn is listening on default port 8080.
+  #Module dependencies
+  #  mod_rewrite
+  #  mod_proxy
+  #  mod_proxy_http
+  <VirtualHost gitlab.example.com:80>
+  ServerName gitlab.example.com
+  ServerSignature Off
 
-    ProxyPreserveHost On
+  ProxyPreserveHost On
 
-    # Ensure that encoded slashes are not decoded but left in their encoded state.
-    # http://doc.gitlab.com/ce/api/projects.html#get-single-project
-    AllowEncodedSlashes NoDecode
+  # Ensure that encoded slashes are not decoded but left in their encoded state.
+  # http://doc.gitlab.com/ce/api/projects.html#get-single-project
+  AllowEncodedSlashes NoDecode
 
-    <Location />
-    # New authorization commands for apache 2.4 and up
-    # http://httpd.apache.org/docs/2.4/upgrading.html#access
-    Require all granted
+  <Location />
+  # New authorization commands for apache 2.4 and up
+  # http://httpd.apache.org/docs/2.4/upgrading.html#access
+  Require all granted
 
-    ProxyPassReverse http://127.0.0.1:8080
-    ProxyPassReverse http://gitlab.example.com/
-    </Location>
+  ProxyPassReverse http://127.0.0.1:8080
+  ProxyPassReverse http://gitlab.example.com/
+  </Location>
 
-    #apache equivalent of nginx try files
-    # http://serverfault.com/questions/290784/what-is-apaches-equivalent-of-nginxs-try-files
-    # http://stackoverflow.com/questions/10954516/apache2-proxypass-for-rails-app-gitlab
-    RewriteEngine on
-    RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
-    RewriteRule .* http://127.0.0.1:8080%{REQUEST_URI} [P,QSA]
+  #apache equivalent of nginx try files
+  # http://serverfault.com/questions/290784/what-is-apaches-equivalent-of-nginxs-try-files
+  # http://stackoverflow.com/questions/10954516/apache2-proxypass-for-rails-app-gitlab
+  RewriteEngine on
+  RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
+  RewriteRule .* http://127.0.0.1:8080%{REQUEST_URI} [P,QSA]
 
-    # needed for downloading attachments
-    DocumentRoot /opt/gitlab/embedded/service/gitlab-rails/public
+  # needed for downloading attachments
+  DocumentRoot /opt/gitlab/embedded/service/gitlab-rails/public
 
-    #Set up apache error documents, if back end goes down (i.e. 503 error) then a maintenance/deploy page is thrown up.
-    ErrorDocument 404 /404.html
-    ErrorDocument 422 /422.html
-    ErrorDocument 500 /500.html
-    ErrorDocument 503 /deploy.html
+  #Set up apache error documents, if back end goes down (i.e. 503 error) then a maintenance/deploy page is thrown up.
+  ErrorDocument 404 /404.html
+  ErrorDocument 422 /422.html
+  ErrorDocument 500 /500.html
+  ErrorDocument 503 /deploy.html
 
-    LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b" common_forwarded
-    ErrorLog  /var/log/httpd/logs/gitlab.example.com_error.log
-    CustomLog /var/log/httpd/logs/gitlab.example.com_forwarded.log common_forwarded
-    CustomLog /var/log/httpd/logs/gitlab.example.com_access.log combined env=!dontlog
-    CustomLog /var/log/httpd/logs/gitlab.example.com.log combined
+  LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b" common_forwarded
+  ErrorLog  /var/log/httpd/logs/gitlab.example.com_error.log
+  CustomLog /var/log/httpd/logs/gitlab.example.com_forwarded.log common_forwarded
+  CustomLog /var/log/httpd/logs/gitlab.example.com_access.log combined env=!dontlog
+  CustomLog /var/log/httpd/logs/gitlab.example.com.log combined
 
-    </VirtualHost>
+</VirtualHost>
+```
 
 Then bind GitLab virtual host to enabled sites and restart apache:
 
-    sudo a2ensite gitlab
-    sudo service apache2 restart
+```text
+sudo a2ensite gitlab
+sudo service apache2 restart
+```
 
 Then run ```sudo gitlab-ctl reconfigure``` to reload GitLab configurations. If you need to restart the server, use the command ```sudo gitlab-ctl restart```.
 

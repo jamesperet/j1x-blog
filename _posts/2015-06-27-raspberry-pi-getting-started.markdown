@@ -21,7 +21,9 @@ published: true
 
 Insert a MicroSD card to your computer and find out the disk identifier (ex: ```disk4```):
 
-    diskutil list
+```bash
+diskutil list
+```
 
 Unmount the SD card using the disk identifier:
 

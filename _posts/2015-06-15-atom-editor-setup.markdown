@@ -68,13 +68,15 @@ This is my current list of packages for the Atom Editor. Since Atom is in consta
 
 Its really easy to create your own keyboard shortcuts. Click on the menu item **"Open Your Keymap"**. This will open a ```keymap.cson``` file. To create your key bindings, just add the key combination and action to the ```body``` object:
 
-    'body':
-      'f6': 'status-bar:toggle'
-      'ctrl-tab': 'pane:show-next-item'
-      'ctrl-shift-tab': 'pane:show-previous-item'
-      'ctrl-alt-tab' : 'window:focus-next-pane'
-      'ctrl-alt-shift-tab' : 'window:focus-previous-pane'
-      'ctrl-alt-cmd-p' : 'project-sidebar:toggle'
+```text
+'body':
+  'f6': 'status-bar:toggle'
+  'ctrl-tab': 'pane:show-next-item'
+  'ctrl-shift-tab': 'pane:show-previous-item'
+  'ctrl-alt-tab' : 'window:focus-next-pane'
+  'ctrl-alt-shift-tab' : 'window:focus-previous-pane'
+  'ctrl-alt-cmd-p' : 'project-sidebar:toggle'
+```
 
 To find the correct action name, use the Atom action navigator. Open it with ```CMD + Shift + P``` on mac or ```CTRL + Shift + P``` on windows.
 
@@ -84,65 +86,67 @@ In the same way that modifying keybindings, its possible to modify Atom's styles
 
 Here is my stylesheet with some overrides:
 
-    atom-workspace .browser-page webview {
-      margin: 0px;
-    }
+```css
+atom-workspace .browser-page webview {
+  margin: 0px;
+}
 
-    webview {
-      margin: 0px;
-    }
+webview {
+  margin: 0px;
+}
 
-    .pane-info {
-      margin-right: 12px;
-      margin-top: 8px;
-    }
+.pane-info {
+  margin-right: 12px;
+  margin-top: 8px;
+}
 
-    .right.tool-panel.panel-right {
-      background-color: #2B2E31;
-    }
+.right.tool-panel.panel-right {
+  background-color: #2B2E31;
+}
 
-    .project-sidebar.padded {
-      background-color: #3a3e42;
-      line-height: 32px;
-      height: 40px;
-      padding: 0px;
-      color: #ffffff;
-    }
+.project-sidebar.padded {
+  background-color: #3a3e42;
+  line-height: 32px;
+  height: 40px;
+  padding: 0px;
+  color: #ffffff;
+}
 
-    .project-sidebar.padded h1 {
-      margin: 0px;
-      padding: 0px;
-      height: 40px;
-      font-size: 13px;
-      font-weight: 400;
-      padding-top: 16px;
-      padding-left: 8px;
-    }
+.project-sidebar.padded h1 {
+  margin: 0px;
+  padding: 0px;
+  height: 40px;
+  font-size: 13px;
+  font-weight: 400;
+  padding-top: 16px;
+  padding-left: 8px;
+}
 
-    .project-sidebar.padded li {
-      padding-left: 8px;
-      padding-right: 10px;
-    }
+.project-sidebar.padded li {
+  padding-left: 8px;
+  padding-right: 10px;
+}
 
-    body {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      /*text-rendering: optimizeLegibility; */
-    }
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /*text-rendering: optimizeLegibility; */
+}
 
-    .tree-view-resizer, .editor {
-      ::-webkit-scrollbar {
-      width: 0.5em;
-      height: 0.5em;
-    }
+.tree-view-resizer, .editor {
+  ::-webkit-scrollbar {
+  width: 0.5em;
+  height: 0.5em;
+}
 
-    ::-webkit-scrollbar-track {
-      background-color: #303030;
-    }
+::-webkit-scrollbar-track {
+  background-color: #303030;
+}
 
-    ::-webkit-scrollbar-thumb {
-      background-color: lighten(#303030, 15%);
-    }
+::-webkit-scrollbar-thumb {
+  background-color: lighten(#303030, 15%);
+}
+```
 
 
 To find what classes to modify, you can use the **Chrome Developer Tools** inside Atom. To open the panel press ```CMD + Option + i``` on a mac or ```CTRL + Option + i``` on windows. Then you can use the magnifying glass tool to click on any element of the Atom IDE layout and see its HTML and CSS classes.
