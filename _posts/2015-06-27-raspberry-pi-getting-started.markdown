@@ -39,7 +39,7 @@ For more information on creating a disk image of the Raspbian OS on a micro SD c
 
 ### First Boot
 
-The username and password for Raspbian “squeeze” are:
+The username and password for Raspbian “squeeze” or "Jessie" are:
 
     $ Username: Pi
 
@@ -49,11 +49,52 @@ To start the Raspbian GUI, run the command:
 
     $ startx
 
+To enter the Raspbian system settings:
+
+    $ sudo raspi-config
+
 ### Setting up Wi-Fi and Ethernet
 
 To set up multiple wired and wi-fi connections using WICD-CURSES app, follow this [instructions](http://www.raspyfi.com/wi-fi-on-raspberry-pi-a-simple-guide/).
 
-To set up a single wi-fi connection, follow this [instructions](http://www.howtogeek.com/167425/how-to-setup-wi-fi-on-your-raspberry-pi-via-the-command-line/)
+To set up a single wi-fi connection on a raspberry pi 3 with Rasbian Jessie, add the following to the ```/etc/wpa_supplicant/wpa_supplicant.conf``` file:
+
+    network={
+      ssid="network_name"
+      psk="network_password"
+    }
+
+For more information about setting the wifi, follow this [tutorial](http://www.howtogeek.com/167425/how-to-setup-wi-fi-on-your-raspberry-pi-via-the-command-line/).
+
+If you want to disable the wifi power management, so that the wifi doesnt turn of due to inactivity, change the file ```/etc/network/interfaces``` and add
+```wireless-power off``` to your wifi connection:
+
+    auto wlan0
+    allow-hotplug wlan0
+    iface wlan0 inet dhcp
+    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+    wireless-power off
+    iface default inet dhcp
+
+You can also run the a command to turn wifi power management off until the next reboot:
+
+    sudo iwconfig wlan0 power off
+
+After changing the network configurations, reboot your pi:
+
+    sudo reboot
+
+You can check your network status with the following commands. Check if ```inet addr``` is an *IP* in your network.
+
+    iwconfig
+    iwconfig wlan0
+    ifconfig
+    ifconfig wlan0
+
+To manualy stop and restart your wifi connection, tun the following commands:
+
+    sudo ifdown wlan0
+    sudo ifup wlan0
 
 ### Installing Apps
 
@@ -117,6 +158,13 @@ To [play a video with VLC thru a ssh session](http://stackoverflow.com/questions
 ### HPlayer
 
 [HPlayer](https://github.com/Hemisphere-Project/HPlayer) is a OSC controllable and GPU accelerated video player for Raspberry Pi with OpenGL shaders support.
+
+### Prevent sleeping
+
+To prevent the Raspberry Pi from turning off the screen or entering in power saving mode, change the following configurations in the file ```/etc/kbd/config``` and the reboot.
+
+    BLANK_TIME=0
+    POWERDOWN_TIME=0
 
 ## Misc
 
